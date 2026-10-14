@@ -2,6 +2,17 @@
 
 public class Livro
 {
+    public Livro(string categoria, string titulo, int numPaginas, string autor, string genero, int preco, string dataDeEmissao)
+    {
+        ValidarCategoria(categoria);
+        ValidarTitulo(titulo);
+        ValidarNumPaginas(numPaginas);
+        ValidarAutor(autor);
+        ValidarGenero(genero);
+        ValidarPreco(preco);
+        ValidarDataDeEmissao(dataDeEmissao);
+    }
+    
     public string Categoria { get; private set; }
     public string Titulo { get; private set; }
     public int NumPaginas  { get; private set; }
