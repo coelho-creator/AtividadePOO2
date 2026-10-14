@@ -2,7 +2,7 @@
 
 public class Livro
 {
-    public Livro(string categoria, string titulo, int numPaginas, string autor, string genero, int preco, string dataDeEmissao)
+    public Livro(string categoria, string titulo, int numPaginas, string autor, string genero, decimal preco, DateTime dataDeEmissao)
     {
         ValidarCategoria(categoria);
         ValidarTitulo(titulo);
@@ -18,10 +18,10 @@ public class Livro
     public int NumPaginas  { get; private set; }
     public string Autor { get; private set; }
     public string Genero { get; private set; }
-    public int Preco { get; private set; }
-    public string DataDeEmissao { get; private set; }
+    public decimal Preco { get; private set; }
+    public DateTime DataDeEmissao { get; private set; }
 
-    public void ValidarCategoria(string categoria)
+    private void ValidarCategoria(string categoria)
     {
         if (string.IsNullOrWhiteSpace(categoria))
             throw new Exception("Categoria não pode estar vazio ou nulo!");
@@ -29,7 +29,7 @@ public class Livro
         Categoria = categoria;
     }
 
-    public void ValidarTitulo(string titulo)
+    private void ValidarTitulo(string titulo)
     {
         if (string.IsNullOrWhiteSpace(titulo))
             throw new Exception("Titulo não pode estar vazio ou nulo!");
@@ -37,15 +37,18 @@ public class Livro
         Titulo = titulo;
     }
 
-    public void ValidarNumPaginas(int numPaginas)
+    private void ValidarNumPaginas(int numPaginas)
     {
-        if (string.IsNullOrWhiteSpace(numPaginas.ToString()))
-            throw new Exception("Número de páginas não pode estar vazio ou nulo!");
+        if (numPaginas <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(numPaginas), 
+                "O número de páginas deve ser maior que zero.");
+        }
         
         NumPaginas = numPaginas;
     }
 
-    public void ValidarAutor(string autor)
+    private void ValidarAutor(string autor)
     {
         if (string.IsNullOrWhiteSpace(autor))
             throw new Exception("Autor não pode estar vazio ou nulo!");
@@ -53,7 +56,7 @@ public class Livro
         Autor = autor;
     }
 
-    public void ValidarGenero(string genero)
+    private void ValidarGenero(string genero)
     {
         if (string.IsNullOrWhiteSpace(genero))
             throw new Exception("Gênero não pode estar vazio ou nulo!");
@@ -61,18 +64,27 @@ public class Livro
         Genero = genero;
     }
 
-    public void ValidarPreco(int preco)
+    private void ValidarPreco(decimal preco)
     {
-        if (string.IsNullOrWhiteSpace(preco.ToString()))
-            throw new Exception("Preço não pode estar vazio ou nulo!");
+        if (preco <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(preco), "O preço deve ser maior que zero.");
+        }
         
         Preco = preco;
     }
 
-    public void ValidarDataDeEmissao(string dataDeEmissao)
+    private void ValidarDataDeEmissao(DateTime dataDeEmissao)
     {
-        if (string.IsNullOrWhiteSpace(dataDeEmissao))
-            throw new Exception("A data de emissão não pode estar vazia ou nula!");
+        if (dataDeEmissao == default(DateTime))
+        {
+            throw new ArgumentException("A data de emissão não pode ser vazia.", nameof(dataDeEmissao));
+        }
+        
+        if (dataDeEmissao > DateTime.Now)
+        {
+            throw new ArgumentOutOfRangeException(nameof(dataDeEmissao), "A data de emissão não pode ser no futuro.");
+        }
         
         DataDeEmissao = dataDeEmissao;
     }
